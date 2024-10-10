@@ -1,16 +1,18 @@
-import React, { HtmlHTMLAttributes, useState } from 'react'
+import React, {useState } from 'react'
+import { TodoCategory } from '../enums/TodoCategory';
 
 interface TodoFormProps {
-  addTodo: (todo: string) => void;
+  addTodo: (text: string, category: TodoCategory)=>void
 }
 
 export const TodoForm:React.FC<TodoFormProps> = ({addTodo}) => {
     const [input, setInput]=useState('');
+    const [category, setCategory]=useState<TodoCategory>(TodoCategory.Personal);
 
     const handleClick=(e: React.FormEvent<HTMLFormElement>)=>{
       e?.preventDefault();
       if(input.trim()){
-        addTodo(input.trim());
+        addTodo(input.trim(), category);
         setInput('');
       }
     }
@@ -23,6 +25,14 @@ export const TodoForm:React.FC<TodoFormProps> = ({addTodo}) => {
         value={input}
         onChange={(e)=> setInput(e.target.value)}
          />
+         <select
+         value={category}
+         onChange={e=>setCategory(e.target.value as TodoCategory)}
+         >
+          {Object.values(TodoCategory).map((cat)=>(
+          <option value={cat} key={cat}> {cat}</option>
+          ))}
+         </select>
         <button type='submit' >OK</button>
         </label>
         

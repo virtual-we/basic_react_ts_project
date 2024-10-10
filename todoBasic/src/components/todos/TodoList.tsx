@@ -1,14 +1,25 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { TodoCategory } from '../enums/TodoCategory'
 
-interface todoElement{
-    todos: string[]
+interface Todo{
+    text: string
+    category: TodoCategory
 }
 
-export const TodoList: React.FC<todoElement> = ({todos}) => {
+interface TodoListProp{
+  todos: Todo[];
+}
+
+export const TodoList: React.FC<TodoListProp> = ({todos}) => {
   return (
     <>
-        {todos.map((todo, index)=>
-        <li key= {index}>{todo}</li>)}
+    <ul>
+    {todos.map((todo, index)=>
+        <li key= {index}>{todo.text} and its category is {todo.category}</li>)} 
+    </ul>
+        
+
+
     </>
   )
 }
