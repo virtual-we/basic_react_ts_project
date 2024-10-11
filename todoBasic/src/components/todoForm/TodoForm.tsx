@@ -35,7 +35,6 @@ export const TodoForm:React.FC<TodoFormProps> = ({addTodo}) => {
          </select>
         <button type='submit' >OK</button>
         </label>
-        
     </form>
     </>
   )
