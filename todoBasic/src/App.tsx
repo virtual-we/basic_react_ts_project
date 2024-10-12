@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { TodoForm } from './components/todoForm/TodoForm'
 import { TodoList } from './components/todos/TodoList';
@@ -11,7 +11,19 @@ interface Todo {
 }
 
 const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<Todo[]>(() => {
+    const savedTodos = localStorage.getItem('todos');
+    return savedTodos ? JSON.parse(savedTodos) : [];
+  });
+
+  useEffect(() => {
+    const getTodoFromLS = localStorage.getItem('todos');
+    if (getTodoFromLS) {
+      setTodos(JSON.parse(getTodoFromLS));
+    }
+  }, []);
+  
+  useEffect(() => { localStorage.setItem('todos', JSON.stringify(todos)) }, [todos])
 
   const addTodo = (text: string, category: TodoCategory) => {
 
@@ -24,7 +36,7 @@ const App: React.FC = () => {
   }
 
   const onEditTodo = (id: number, newText: string, newCategory: TodoCategory) => {
-    setTodos(todos.map(todo => 
+    setTodos(todos.map(todo =>
       todo.id === id ? { ...todo, text: newText, category: newCategory } : todo
     ));
   };
